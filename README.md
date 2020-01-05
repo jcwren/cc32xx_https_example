@@ -96,11 +96,11 @@ closed and resources are freed before the task exits.
 ## Certificate notes
 
 The two certificates in `certs.c` were obtained by browsing to the respective
-sites, finding the root certificate, then using PC's the operating system
-utility and exporting the certificates as a `.pem` file, merging them into
-`certs.c` and adding the double-quotes and linefeed characters. Note that the
-TI examples use `\r\n` as a line terminator, which is not strictly necessary.
-`\n' (Unix-style line endings) work just fine.
+sites, finding the root certificate Common Name, then using PC's the operating
+system utility and exporting the certificates as a `.pem` file, merging them
+into `certs.c` and adding the double-quotes and linefeed characters. Note that
+the TI examples use `\r\n` as a line terminator, which is not strictly
+necessary.  `\n' (Unix-style line endings) work just fine.
 
 It is possible that the `https://apple.com` certificate may not always be
 correct. Apple has multiple root certificates, and it is not clear if going to
