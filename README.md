@@ -46,7 +46,7 @@ To use the `https://apple.com` site:
 ```
 
 You may add additional sites and certificates for additional testing. See
-the 'Certificate notes' section at the end of this README.
+the [Certificate notes](#Certificate notes) section at the end of this README.
 
 ### Configuring the access point
 
