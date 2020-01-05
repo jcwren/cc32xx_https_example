@@ -102,7 +102,7 @@ utility and exporting the certificates as a `.pem` file, merging them into
 TI examples use `\r\n` as a line terminator, which is not strictly necessary.
 `\n' (Unix-style line endings) work just fine.
 
-It is possible that the `https://www.apple.com` certificate may not always be
+It is possible that the `https://apple.com` certificate may not always be
 correct. Apple has multiple root certificates, and it is not clear if going to
 the top-level Apple site will always use the same certificate, or if the
 Apple's load-balancing algorithm might result in connecting to a server that
