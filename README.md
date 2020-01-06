@@ -75,11 +75,11 @@ The connection should have the following connection settings:
     Parity:         None
     Flow Control:   None
 
-* Run the example by pressing the reset button or by running a debug session
+Run the example by pressing the reset button or by running a debug session
 through your IDE.
 
-* The example then makes an HTTP GET call to "www.example.com" and prints
-the HTTP response status and the number of bytes of data received.
+The example then makes an HTTP GET call to site defined by `SITE_HOSTNAME` and
+prints the HTTP response status and the number of bytes of data received.
 
 ## Application Design Details
 
