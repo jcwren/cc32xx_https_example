@@ -45,7 +45,7 @@ static int32_t mode;
 //
 extern void *httpTask (void *pvParameters);
 
-#if ENABLE_NWP_LOGS
+#if defined (ENABLE_NWP_LOGS)
 //
 //  Maps pin 62 to output NWP debug info. This is binary async serial data at
 //  921600/8/N/1, and will will look like garbage. Capture it using Putty,
