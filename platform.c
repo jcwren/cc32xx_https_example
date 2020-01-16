@@ -4,6 +4,14 @@
 #include <ti/drivers/net/wifi/slnetifwifi.h>
 #include <ti/drivers/SPI.h>
 
+//
+//  These includes are for the Board_initHook() support, if enabled
+//
+#include <ti/devices/cc32xx/inc/hw_types.h>
+#include <ti/devices/cc32xx/driverlib/pin.h>
+#include <ti/devices/cc32xx/driverlib/rom_map.h>
+#include <ti/devices/cc32xx/driverlib/prcm.h>
+
 #include "ti_drivers_config.h"
 #include "uart_term.h"
 #include "pthread.h"
@@ -19,6 +27,7 @@
 #define TASK_STACK_SIZE      (2048 + 1024)
 #define SLNET_IF_WIFI_PRIO   (5)
 #define SLNET_IF_WIFI_NAME   "CC32xx"
+#undef  ENABLE_NWP_LOGS
 
 #define arrsizeof(x) (sizeof (x) / sizeof (x [0]))
 #define iarrsizeof(x) (int) (sizeof (x) / sizeof (x [0]))
@@ -36,6 +45,21 @@ static int32_t mode;
 //
 extern void *httpTask (void *pvParameters);
 
+#if ENABLE_NWP_LOGS
+//
+//  Maps pin 62 to output NWP debug info. This is binary async serial data at
+//  921600/8/N/1, and will will look like garbage. Capture it using Putty,
+//  TeraTerm, whatever. Just make sure the saved output doesn't have bit 7 set
+//  low. TI Engineers will ask for this output if needed.
+//
+void Board_initHook (void)
+{
+  MAP_PRCMPeripheralClkEnable (PRCM_UARTA0, PRCM_RUN_MODE_CLK);
+  MAP_PinTypeUART (PIN_62, PIN_MODE_1);
+}
+#endif
+
+//
 //
 //
 void printError (const char *func, char *errString, int code)
