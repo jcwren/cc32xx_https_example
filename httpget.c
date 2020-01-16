@@ -70,7 +70,7 @@ void *httpTask (void *pvParameters)
   }
 #endif
 
-  if ((ret = HTTPClient_sendRequest (httpClientHandle, HTTP_METHOD_GET, SITE_REQUEST_URI, NULL,0, 0)) < 0)
+  if ((ret = HTTPClient_sendRequest (httpClientHandle, HTTP_METHOD_GET, SITE_REQUEST_URI, NULL, 0, 0)) < 0)
     printError (__func__, "HTTPClient_sendRequest", ret);
 
   if (ret != HTTP_SC_OK)
