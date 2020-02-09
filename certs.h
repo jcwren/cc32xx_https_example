@@ -5,7 +5,7 @@
 //
 #define SSID_NAME           "My AP SSID"
 #define SECURITY_TYPE       SL_WLAN_SEC_TYPE_WPA_WPA2
-#define SECURITY_KEY        "My_AP_Password""
+#define SECURITY_KEY        "My_AP_Password"
 
 //
 //  Define the desired site and undef any others
