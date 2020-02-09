@@ -80,7 +80,7 @@ void *httpTask (void *pvParameters)
 
   do
   {
-    if ((ret = HTTPClient_readResponseBody(httpClientHandle, data, sizeof(data), &moreDataFlag)) < 0)
+    if ((ret = HTTPClient_readResponseBody (httpClientHandle, data, sizeof (data), &moreDataFlag)) < 0)
       printError (__func__, "HTTPClient_readResponseBody", ret);
 
     UART_PRINT ("%.*s", ret, data);
