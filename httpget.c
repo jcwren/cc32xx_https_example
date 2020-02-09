@@ -24,6 +24,12 @@ extern void printError (const char *func, char *errString, int code);
 //
 void *httpTask (void *pvParameters)
 {
+#if (CA_ROOT_TYPE == CA_ROOT_TYPE_MEMORY)
+  SlNetSockSecAttrib_t *secAttrib = SlNetSock_secAttribCreate ();
+  int16_t secureRetVal;
+#else
+  HTTPClient_extSecParams httpClientSecParams = {0};
+#endif
   HTTPClient_Handle httpClientHandle;
   int16_t statusCode;
   bool moreDataFlag = false;
@@ -46,28 +52,19 @@ void *httpTask (void *pvParameters)
     printError (__func__, "HTTPClient_setHeader", ret);
 
 #if (CA_ROOT_TYPE == CA_ROOT_TYPE_MEMORY)
-  {
-    int16_t secureRetVal;
-    SlNetSockSecAttrib_t *secAttrib = SlNetSock_secAttribCreate ();
-
-    if ((ret = SlNetIf_loadSecObj (SLNETIF_SEC_OBJ_TYPE_CERTIFICATE, ROOT_CA_CERT_FILE, strlen (ROOT_CA_CERT_FILE), caRootCert, caRootCertSize, SLNETIF_ID_1)) < 0)
-      printError (__func__, "SlNetIf_loadSecOb", ret);
-    if ((ret = SlNetSock_secAttribSet (secAttrib, SLNETSOCK_SEC_ATTRIB_PEER_ROOT_CA, ROOT_CA_CERT_FILE, sizeof (ROOT_CA_CERT_FILE))) < 0)
-      printError (__func__, "SlNetSock_secAttribSet", ret);
-    if ((ret = HTTPClient_connect2 (httpClientHandle, SITE_HOSTNAME, secAttrib, 0, &secureRetVal)) < 0)
-      printError (__func__, "HTTPClient_connect2", ret);
-  }
+  if ((ret = SlNetIf_loadSecObj (SLNETIF_SEC_OBJ_TYPE_CERTIFICATE, ROOT_CA_CERT_FILE, strlen (ROOT_CA_CERT_FILE), caRootCert, caRootCertSize, SLNETIF_ID_1)) < 0)
+    printError (__func__, "SlNetIf_loadSecOb", ret);
+  if ((ret = SlNetSock_secAttribSet (secAttrib, SLNETSOCK_SEC_ATTRIB_PEER_ROOT_CA, ROOT_CA_CERT_FILE, sizeof (ROOT_CA_CERT_FILE))) < 0)
+    printError (__func__, "SlNetSock_secAttribSet", ret);
+  if ((ret = HTTPClient_connect2 (httpClientHandle, SITE_HOSTNAME, secAttrib, 0, &secureRetVal)) < 0)
+    printError (__func__, "HTTPClient_connect2", ret);
 #else
-  {
-    HTTPClient_extSecParams httpClientSecParams;
+  httpClientSecParams.rootCa     = CA_ROOT_FILE;
+  httpClientSecParams.clientCert = NULL;
+  httpClientSecParams.privateKey = NULL;
 
-    httpClientSecParams.rootCa     = CA_ROOT_FILE;
-    httpClientSecParams.clientCert = NULL;
-    httpClientSecParams.privateKey = NULL;
-
-    if ((ret = HTTPClient_connect (httpClientHandle, SITE_HOSTNAME, &httpClientSecParams, 0)) < 0)
-      printError (__func__, "HTTPClient_connect", ret);
-  }
+  if ((ret = HTTPClient_connect (httpClientHandle, SITE_HOSTNAME, &httpClientSecParams, 0)) < 0)
+    printError (__func__, "HTTPClient_connect", ret);
 #endif
 
   if ((ret = HTTPClient_sendRequest (httpClientHandle, HTTP_METHOD_GET, SITE_REQUEST_URI, NULL, 0, 0)) < 0)
